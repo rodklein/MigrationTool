@@ -11,9 +11,9 @@ public class AlterTable extends Migration {
 	
 	private final String tableName;
 	private Parsable parsable;
-	private final MigrationSetup configuration;
+	private final MigrationConfiguration configuration;
 
-	public AlterTable(String tableName, MigrationSetup dialect) {
+	public AlterTable(String tableName, MigrationConfiguration dialect) {
 		this.tableName = tableName;
 		this.configuration = dialect;
 	}

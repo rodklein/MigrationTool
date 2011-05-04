@@ -12,9 +12,9 @@ public class CreateTable extends Migration {
 	
 	private final String tableName;
 	private List<Column> columns = new ArrayList<Column>();
-	private final MigrationSetup configuration;
+	private final MigrationConfiguration configuration;
 
-	public CreateTable(String tableName, MigrationSetup configuration) {
+	public CreateTable(String tableName, MigrationConfiguration configuration) {
 		this.tableName = tableName;
 		this.configuration = configuration;
 	}
