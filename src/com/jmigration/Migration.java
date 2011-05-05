@@ -29,4 +29,17 @@ public abstract class Migration {
 		return new ForeignKey(fkName);
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this) return true;
+		if (obj instanceof Migration) {
+			StringBuilder sql1 = new StringBuilder();
+			StringBuilder sql2 = new StringBuilder();
+			parse(sql1);
+			((Migration) obj).parse(sql2);
+			return sql1.toString().equals(sql2.toString());
+		}
+		return false;
+	}
+	
 }

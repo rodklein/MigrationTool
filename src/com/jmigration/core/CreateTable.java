@@ -38,5 +38,5 @@ public class CreateTable extends Migration {
 	private MigrationDialect getDialect() {
 		return configuration.getDialect();
 	}
-
+	
 }
