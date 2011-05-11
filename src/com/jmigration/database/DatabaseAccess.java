@@ -35,5 +35,9 @@ public class DatabaseAccess {
 		m.parse(sql);
 		template.execute(sql.toString());
 	}
+	
+	public void markAsExecuted(MigrationUnit migrationUnit) {
+		template.update("insert into MIGRATIONS_VERSION (ID, MIGRATION_NAME) values(? , ?)", 1, migrationUnit.name());
+	}
 
 }

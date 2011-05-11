@@ -20,6 +20,7 @@ public class MigrationRunner {
 			for (Migration migration : list) {
 				db.exec(migration);
 			}
+			db.markAsExecuted(unit);
 		}
 	}
 
