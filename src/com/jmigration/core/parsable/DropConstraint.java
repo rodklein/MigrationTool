@@ -15,8 +15,7 @@ public class DropConstraint implements Parsable {
 	@Override
 	public String parse(MigrationDialect dialect) {
 		StringBuilder sql = new StringBuilder();
-		sql.append(dialect.dropConstraint());
-		sql.append(constraint.parse(dialect));
+		sql.append(dialect.dropConstraint(constraint));
 		return sql.toString();
 	}
 

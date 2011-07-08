@@ -1,5 +1,7 @@
 package com.jmigration.dialect;
 
+import com.jmigration.core.Constraint;
+
 
 public interface MigrationDialect {
 
@@ -10,7 +12,7 @@ public interface MigrationDialect {
 	public abstract String alterColumn();
 	public abstract String dropColumn();
 	public abstract String addConstraint();
-	public abstract String dropConstraint();
+	public abstract String dropConstraint(Constraint constraint);
 	public abstract String foreignKey(String foreignKeyName);
 	public abstract String primaryKey(String primaryKeyName);
 

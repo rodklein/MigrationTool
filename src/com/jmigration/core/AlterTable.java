@@ -5,6 +5,7 @@ import com.jmigration.core.parsable.AddColumn;
 import com.jmigration.core.parsable.AddConstraint;
 import com.jmigration.core.parsable.AlterColumn;
 import com.jmigration.core.parsable.DropColumn;
+import com.jmigration.core.parsable.DropConstraint;
 import com.jmigration.dialect.MigrationDialect;
 
 public class AlterTable extends Migration {
@@ -48,4 +49,8 @@ public class AlterTable extends Migration {
 		return this;
 	}
 	
+	public AlterTable drop(Constraint constraint) {
+		parsable = new DropConstraint(constraint);
+		return this;
+	}
 }

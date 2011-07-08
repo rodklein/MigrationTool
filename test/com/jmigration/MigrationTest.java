@@ -106,10 +106,18 @@ public class MigrationTest {
 	public void testDropConstraint() {
 		StringBuilder sql = new StringBuilder();
 		alterTable("Pessoa")
-		.drop(column("nome"))
+		.drop(foreignKey("fk_cidade"))
 		.parse(sql);
 		
-		assertEquals("alter table Pessoa drop column nome", sql.toString());
+		assertEquals("alter table Pessoa drop constraint fk_cidade", sql.toString());
+		
+		sql = new StringBuilder();
+		alterTable("Pessoa")
+		.drop(primaryKey("pk_pessoa"))
+		.parse(sql);
+		
+		assertEquals("alter table Pessoa drop constraint pk_pessoa", sql.toString());
+		
 	}
 
 

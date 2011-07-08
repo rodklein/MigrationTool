@@ -24,4 +24,8 @@ public class PrimaryKey implements Constraint {
 		return dialect.primaryKey(primaryKeyName) + "primary key (" + columnName + ")";
 	}
 
+	@Override
+	public String getName() {
+		return primaryKeyName;
+	}
 }

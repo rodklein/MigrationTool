@@ -39,4 +39,8 @@ public class ForeignKey implements Constraint {
 		return dialect.foreignKey(foreignKeyName) + "foreign key (" + referenceColumnName+ ") references " + foreignTableName + " (" + foreignColumnName + ")"; 
 	}
 
+	@Override
+	public String getName() {
+		return foreignKeyName;
+	}
 }

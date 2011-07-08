@@ -4,6 +4,8 @@ import java.sql.Types;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.jmigration.core.Constraint;
+
 public class BaseDialect implements MigrationDialect {
 	
 	protected Map<Integer, String> types = new HashMap<Integer, String>();
@@ -50,8 +52,8 @@ public class BaseDialect implements MigrationDialect {
 	}
 
 	@Override
-	public String dropConstraint() {
-		return " drop ";
+	public String dropConstraint(Constraint constraint) {
+		return " drop constraint " + constraint.getName();
 	}
 
 	@Override
