@@ -9,12 +9,14 @@ import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
+import org.reflections.util.FilterBuilder;
 
 public class ClasspathScanner {
 	
 	@SuppressWarnings("unchecked")
 	public static List<MigrationUnit> scan(String prefix) {
 		Reflections reflections = new Reflections(new ConfigurationBuilder()
+			.filterInputsBy(new FilterBuilder().include(FilterBuilder.prefix(prefix)))
 			.setUrls(ClasspathHelper.getUrlsForPackagePrefix(prefix))
 			.setScanners(new SubTypesScanner()));
 		Set<Class<? extends MigrationUnit>> units = reflections.getSubTypesOf(MigrationUnit.class);

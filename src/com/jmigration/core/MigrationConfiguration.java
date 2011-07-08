@@ -11,6 +11,7 @@ import javax.sql.DataSource;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.jmigration.ClasspathScanner;
+import com.jmigration.MigrationRunner;
 import com.jmigration.MigrationUnit;
 import com.jmigration.base.BasicComparator;
 import com.jmigration.database.DatabaseConfig;
@@ -19,7 +20,6 @@ import com.jmigration.dialect.MigrationDialect;
 
 public class MigrationConfiguration {
 	
-	private static MigrationConfiguration instance;
 	private MigrationDialect dialect = new BaseDialect();
 	private List<MigrationUnit> migrations;
 	private DatabaseConfig databaseConfig;
@@ -48,13 +48,6 @@ public class MigrationConfiguration {
 			Collections.sort(migrations, versionComparator);
 		}
 		databaseConfig = new DatabaseConfig(props.getProperty("migration.jdbc.url"), props.getProperty("migration.jdbc.driver"), props.getProperty("migration.jdbc.username"), props.getProperty("migration.jdbc.password"));
-	}
-	
-	public static MigrationConfiguration getInstance() {
-		if (instance == null) {
-			instance = new MigrationConfiguration(new Properties());
-		}
-		return instance;
 	}
 
 	public void setDialect(MigrationDialect dialect) {
@@ -94,6 +87,10 @@ public class MigrationConfiguration {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	public MigrationRunner createRunner() {
+		return new MigrationRunner(this);
 	}
 	
 

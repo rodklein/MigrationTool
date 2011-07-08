@@ -1,14 +1,14 @@
 package com.jmigration.core;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.sql.Types;
 
 import org.junit.Test;
 
-import com.jmigration.core.Column;
 
-
+@SuppressWarnings("rawtypes")
 public class ColumnTest {
 	
 	@Test

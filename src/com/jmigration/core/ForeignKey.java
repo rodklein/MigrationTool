@@ -1,6 +1,7 @@
 package com.jmigration.core;
 
-import com.jmigration.dialect.MigrationDialect;
+import com.jmigration.MigrationSession;
+
 
 public class ForeignKey implements Constraint {
 	
@@ -35,8 +36,12 @@ public class ForeignKey implements Constraint {
 	}
 
 	@Override
-	public String parse(MigrationDialect dialect) {
-		return dialect.foreignKey(foreignKeyName) + "foreign key (" + referenceColumnName+ ") references " + foreignTableName + " (" + foreignColumnName + ")"; 
+	public void parse(MigrationSession session, SQLCommand sqlCommand) {
+		sqlCommand.append(session.getDialect().foreignKey(foreignKeyName)).append("foreign key (").append(referenceColumnName).append(") references ").append(foreignTableName).append(" (").append(foreignColumnName).append(")"); 
 	}
 
+	@Override
+	public String getName() {
+		return foreignKeyName;
+	}
 }

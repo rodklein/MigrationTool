@@ -1,23 +1,22 @@
 package com.jmigration.core.parsable;
 
+import com.jmigration.MigrationSession;
 import com.jmigration.core.Column;
 import com.jmigration.core.Parsable;
-import com.jmigration.dialect.MigrationDialect;
+import com.jmigration.core.SQLCommand;
 
 public class DropColumn implements Parsable {
 	
-	private final Column column;
+	private final Column<?> column;
 
-	public DropColumn(Column column) {
+	public DropColumn(Column<?> column) {
 		this.column = column;
 	}
 
 	@Override
-	public String parse(MigrationDialect dialect) {
-		StringBuilder sql = new StringBuilder();
-		sql.append(dialect.dropColumn());
-		sql.append(column.parse(dialect));
-		return sql.toString();
+	public void parse(MigrationSession session, SQLCommand sql) {
+		sql.append(session.getDialect().dropColumn());
+		column.parse(session, sql);
 	}
 
 }

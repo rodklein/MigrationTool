@@ -1,8 +1,9 @@
 package com.jmigration.core.parsable;
 
+import com.jmigration.MigrationSession;
 import com.jmigration.core.Constraint;
 import com.jmigration.core.Parsable;
-import com.jmigration.dialect.MigrationDialect;
+import com.jmigration.core.SQLCommand;
 
 public class AddConstraint implements Parsable {
 	
@@ -13,11 +14,9 @@ public class AddConstraint implements Parsable {
 	}
 
 	@Override
-	public String parse(MigrationDialect dialect) {
-		StringBuilder sql = new StringBuilder();
-		sql.append(dialect.addConstraint());
-		sql.append(constraint.parse(dialect));
-		return sql.toString();
+	public void parse(MigrationSession session, SQLCommand sql) {
+		sql.append(session.getDialect().addConstraint());
+		constraint.parse(session, sql);
 	}
 
 }

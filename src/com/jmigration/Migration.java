@@ -5,30 +5,32 @@ import com.jmigration.core.Column;
 import com.jmigration.core.CreateTable;
 import com.jmigration.core.DropTable;
 import com.jmigration.core.ForeignKey;
-import com.jmigration.core.MigrationConfiguration;
 import com.jmigration.core.PrimaryKey;
+import com.jmigration.core.PrimaryKeyColumn;
 
 public abstract class Migration {
 	
-	protected StringBuilder sqlBuilder = new StringBuilder();
-	private static MigrationConfiguration dialect = MigrationConfiguration.getInstance();
-	
 	public static CreateTable createTable(String tableName) {
-		return new CreateTable(tableName, dialect);
+		return new CreateTable(tableName);
 	}
 	
 	public static DropTable dropTable(String tableName) {
-		return new DropTable(tableName, dialect);
+		return new DropTable(tableName);
 	}
 
-	public abstract void parse(StringBuilder sql);
+	public abstract void parse(MigrationSession	session);
 
 	public static AlterTable alterTable(String tableToAlter) {
-		return new AlterTable(tableToAlter, dialect);
+		return new AlterTable(tableToAlter);
 	}
 	
-	public static Column column(String columnName) {
+	@SuppressWarnings("rawtypes")
+	public static Column<?> column(String columnName) {
 		return new Column(columnName);
+	}
+	
+	public static PrimaryKeyColumn primaryKeyColumn(String columnName) {
+		return new PrimaryKeyColumn(columnName);
 	}
 	
 	public static ForeignKey foreignKey(String fkName) {
@@ -45,19 +47,6 @@ public abstract class Migration {
 
 	public static PrimaryKey primaryKey() {
 		return new PrimaryKey();
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == this) return true;
-		if (obj instanceof Migration) {
-			StringBuilder sql1 = new StringBuilder();
-			StringBuilder sql2 = new StringBuilder();
-			parse(sql1);
-			((Migration) obj).parse(sql2);
-			return sql1.toString().equals(sql2.toString());
-		}
-		return false;
 	}
 	
 }

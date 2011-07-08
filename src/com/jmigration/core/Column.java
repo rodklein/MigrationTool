@@ -1,57 +1,101 @@
 package com.jmigration.core;
 
-import com.jmigration.dialect.MigrationDialect;
+import com.jmigration.MigrationSession;
 
-public class Column {
+@SuppressWarnings("unchecked")
+public class Column<T extends Column<T>> {
 	
 	final String columnName;
 	int type = -1;
 	int lenght = -1;
 	int precision = -1;
 	boolean notNull;
+	boolean nullable;
 
 	public Column(String name) {
 		this.columnName = name;
-		
 	}
 	
-	public Column as(int type) {
+	public T as(int type) {
 		this.type = type;
-		return this;
+		return (T) this;
 	}
 
-	public Column notNull() {
+	public T notNull() {
 		notNull = true;
-		return this;
+		return (T) this;
+	}
+	
+	public T nullable() {
+		nullable = true;
+		return (T) this;
 	}
 
-	public Column size(int lenght) {
+	public T size(int lenght) {
 		this.lenght = lenght;
-		return this;
+		return (T) this;
 	}
 
-	public Column size(int lenght, int precision) {
+	public T size(int lenght, int precision) {
 		this.lenght = lenght;
 		this.precision = precision;
-		return this;
+		return (T) this;
 	}
 
-	public String parse(MigrationDialect dialect) {
-		String columnDefinition = columnName;
+	public void parse(MigrationSession session, SQLCommand sqlCommand) {
+		sqlCommand.append(columnName);
 		if (type > -1) {
-			columnDefinition += " " + dialect.getType(type);
+			sqlCommand.append(" ").append(session.getDialect().getType(type));
 		}
 		if (lenght > -1) {
-			columnDefinition += "(" + lenght;
+			sqlCommand.append("(").append(String.valueOf(lenght));
 			if (precision > 0) {
-				columnDefinition += "," + precision;
+				sqlCommand.append(",").append(String.valueOf(precision));
 			}
-			columnDefinition += ")";
+			sqlCommand.append(")");
 		}
 		if (notNull) {
-			columnDefinition += " not null ";
+			sqlCommand.append(" not null ");
+		} else if (nullable) {
+			sqlCommand.append(" null ");
 		}
-		return columnDefinition;
+	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((columnName == null) ? 0 : columnName.hashCode());
+		result = prime * result + lenght;
+		result = prime * result + (notNull ? 1231 : 1237);
+		result = prime * result + precision;
+		result = prime * result + type;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Column<?> other = (Column<?>) obj;
+		if (columnName == null) {
+			if (other.columnName != null)
+				return false;
+		} else if (!columnName.equals(other.columnName))
+			return false;
+		if (lenght != other.lenght)
+			return false;
+		if (notNull != other.notNull)
+			return false;
+		if (precision != other.precision)
+			return false;
+		if (type != other.type)
+			return false;
+		return true;
 	}
 
 }

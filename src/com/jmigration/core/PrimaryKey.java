@@ -1,6 +1,7 @@
 package com.jmigration.core;
 
-import com.jmigration.dialect.MigrationDialect;
+import com.jmigration.MigrationSession;
+
 
 public class PrimaryKey implements Constraint {
 	
@@ -11,8 +12,7 @@ public class PrimaryKey implements Constraint {
 		this.primaryKeyName = pkName;
 	}
 	
-	public PrimaryKey() {
-	}
+	public PrimaryKey() { }
 	
 	public PrimaryKey column(String columnName) {
 		this.columnName = columnName;
@@ -20,8 +20,12 @@ public class PrimaryKey implements Constraint {
 	}
 
 	@Override
-	public String parse(MigrationDialect dialect) {
-		return dialect.primaryKey(primaryKeyName) + "primary key (" + columnName + ")";
+	public void parse(MigrationSession session, SQLCommand sqlCommand) {
+		sqlCommand.append(session.getDialect().primaryKey(primaryKeyName)).append("primary key (").append(columnName).append(")");
 	}
 
+	@Override
+	public String getName() {
+		return primaryKeyName;
+	}
 }

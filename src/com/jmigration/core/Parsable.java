@@ -1,9 +1,10 @@
 package com.jmigration.core;
 
-import com.jmigration.dialect.MigrationDialect;
+import com.jmigration.MigrationSession;
+
 
 public interface Parsable {
 	
-	String parse(MigrationDialect dialect);
+	void parse(MigrationSession session, SQLCommand sqlCommand);
 
 }

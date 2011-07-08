@@ -4,6 +4,9 @@ import java.sql.Types;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.jmigration.MigrationSession;
+import com.jmigration.core.Constraint;
+
 public class BaseDialect implements MigrationDialect {
 	
 	protected Map<Integer, String> types = new HashMap<Integer, String>();
@@ -12,6 +15,7 @@ public class BaseDialect implements MigrationDialect {
 		types.put(Types.VARCHAR, "VARCHAR");
 		types.put(Types.NUMERIC, "NUMERIC");
 		types.put(Types.DATE, "DATE");
+		types.put(Types.TIMESTAMP, "TIMESTAMP");
 	}
 	
 	@Override
@@ -50,8 +54,8 @@ public class BaseDialect implements MigrationDialect {
 	}
 
 	@Override
-	public String dropConstraint() {
-		return " drop ";
+	public String dropConstraint(Constraint constraint) {
+		return " drop constraint " + constraint.getName();
 	}
 
 	@Override
@@ -62,6 +66,11 @@ public class BaseDialect implements MigrationDialect {
 	@Override
 	public String primaryKey(String primaryKeyName) {
 		return primaryKeyName == null ? "" : "constraint " + primaryKeyName + " ";
+	}
+
+	@Override
+	public String addPrimaryKeyClause(MigrationSession session, String sequenceName) {
+		return "primary key";
 	}
 
 }

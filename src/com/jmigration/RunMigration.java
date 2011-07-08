@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.Properties;
 
 import com.jmigration.core.MigrationConfiguration;
-import com.jmigration.core.MigrationRunner;
-import com.jmigration.database.DatabaseAccess;
 
 public class RunMigration {
 	
@@ -17,11 +15,8 @@ public class RunMigration {
 		Properties p = new Properties();
 		p.load(RunMigration.class.getResourceAsStream("/migration.properties"));
 		MigrationConfiguration config = new MigrationConfiguration(p);
-		DatabaseAccess databaseAccess = new DatabaseAccess(config);
-		MigrationRunner migrationRunner = new MigrationRunner(databaseAccess);
-		for (MigrationUnit migrationUnit : config.getMigrations(currentVersion)) {
-			migrationRunner.run(migrationUnit);
-		}
+		
+		config.createRunner().run(currentVersion);
 	}
 
 }

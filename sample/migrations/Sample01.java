@@ -15,7 +15,7 @@ public class Sample01 implements MigrationUnit {
 	}
 	
 	public Migration createTablePessoa() {
-		return createTable("PESSOAS")
+		return createTable("PESSOAS_Z")
 			.add(column("ID_PESSOA").as(Types.NUMERIC).size(6).notNull())
 			.add(column("NM_PESSOA").as(Types.VARCHAR).size(40).notNull())
 			.add(column("DT_NASCIMENTO").as(Types.DATE).notNull());
