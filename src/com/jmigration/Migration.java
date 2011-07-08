@@ -3,8 +3,10 @@ package com.jmigration;
 import com.jmigration.core.AlterTable;
 import com.jmigration.core.Column;
 import com.jmigration.core.CreateTable;
+import com.jmigration.core.DropTable;
 import com.jmigration.core.ForeignKey;
 import com.jmigration.core.MigrationConfiguration;
+import com.jmigration.core.PrimaryKey;
 
 public abstract class Migration {
 	
@@ -13,6 +15,10 @@ public abstract class Migration {
 	
 	public static CreateTable createTable(String tableName) {
 		return new CreateTable(tableName, dialect);
+	}
+	
+	public static DropTable dropTable(String tableName) {
+		return new DropTable(tableName, dialect);
 	}
 
 	public abstract void parse(StringBuilder sql);
@@ -27,6 +33,18 @@ public abstract class Migration {
 	
 	public static ForeignKey foreignKey(String fkName) {
 		return new ForeignKey(fkName);
+	}
+	
+	public static ForeignKey foreignKey() {
+		return new ForeignKey();
+	}
+	
+	public static PrimaryKey primaryKey(String pkName) {
+		return new PrimaryKey(pkName);
+	}
+
+	public static PrimaryKey primaryKey() {
+		return new PrimaryKey();
 	}
 	
 	@Override

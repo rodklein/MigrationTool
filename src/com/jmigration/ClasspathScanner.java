@@ -12,6 +12,7 @@ import org.reflections.util.ConfigurationBuilder;
 
 public class ClasspathScanner {
 	
+	@SuppressWarnings("unchecked")
 	public static List<MigrationUnit> scan(String prefix) {
 		Reflections reflections = new Reflections(new ConfigurationBuilder()
 			.setUrls(ClasspathHelper.getUrlsForPackagePrefix(prefix))

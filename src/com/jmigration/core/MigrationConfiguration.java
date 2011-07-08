@@ -10,7 +10,6 @@ import javax.sql.DataSource;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
 import com.jmigration.ClasspathScanner;
 import com.jmigration.MigrationUnit;
 import com.jmigration.base.BasicComparator;
@@ -26,6 +25,7 @@ public class MigrationConfiguration {
 	private DatabaseConfig databaseConfig;
 	private Comparator<MigrationUnit> versionComparator;
 
+	@SuppressWarnings("unchecked")
 	public MigrationConfiguration(Properties props) {
 		if (props.containsKey("migration.dialect")) {
 			try {

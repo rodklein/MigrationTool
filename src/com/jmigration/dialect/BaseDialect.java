@@ -41,18 +41,27 @@ public class BaseDialect implements MigrationDialect {
 
 	@Override
 	public String dropColumn() {
-		return " drop colum ";
+		return " drop column ";
 	}
 
 	@Override
 	public String addConstraint() {
-		return " add constraint ";
+		return " add ";
 	}
 
 	@Override
 	public String dropConstraint() {
-		return " drop constraint ";
+		return " drop ";
 	}
 
+	@Override
+	public String foreignKey(String foreignKeyName) {
+		return foreignKeyName == null ? "" : "constraint " + foreignKeyName + " ";
+	}
+
+	@Override
+	public String primaryKey(String primaryKeyName) {
+		return primaryKeyName == null ? "" : "constraint " + primaryKeyName + " ";
+	}
 
 }

@@ -4,7 +4,7 @@ import com.jmigration.dialect.MigrationDialect;
 
 public class ForeignKey implements Constraint {
 	
-	private final String foreignKeyName;
+	private String foreignKeyName;
 	private String foreignTableName;
 	private String referenceColumnName;
 	private String foreignColumnName;
@@ -13,6 +13,9 @@ public class ForeignKey implements Constraint {
 		this.foreignKeyName = fkName;
 	}
 	
+	public ForeignKey() {
+	}
+
 	public ForeignKey column(String columnName) {
 		this.referenceColumnName = columnName;
 		return this;
@@ -33,7 +36,7 @@ public class ForeignKey implements Constraint {
 
 	@Override
 	public String parse(MigrationDialect dialect) {
-		return foreignKeyName + " foreign key (" + referenceColumnName+ ") references " + foreignTableName + " (" + foreignColumnName + ")"; 
+		return dialect.foreignKey(foreignKeyName) + "foreign key (" + referenceColumnName+ ") references " + foreignTableName + " (" + foreignColumnName + ")"; 
 	}
 
 }

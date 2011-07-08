@@ -11,5 +11,7 @@ public interface MigrationDialect {
 	public abstract String dropColumn();
 	public abstract String addConstraint();
 	public abstract String dropConstraint();
+	public abstract String foreignKey(String foreignKeyName);
+	public abstract String primaryKey(String primaryKeyName);
 
 }

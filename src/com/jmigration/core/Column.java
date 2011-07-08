@@ -5,7 +5,7 @@ import com.jmigration.dialect.MigrationDialect;
 public class Column {
 	
 	final String columnName;
-	int type;
+	int type = -1;
 	int lenght = -1;
 	int precision = -1;
 	boolean notNull;
@@ -37,7 +37,10 @@ public class Column {
 	}
 
 	public String parse(MigrationDialect dialect) {
-		String columnDefinition = columnName + " " + dialect.getType(type);
+		String columnDefinition = columnName;
+		if (type > -1) {
+			columnDefinition += " " + dialect.getType(type);
+		}
 		if (lenght > -1) {
 			columnDefinition += "(" + lenght;
 			if (precision > 0) {
