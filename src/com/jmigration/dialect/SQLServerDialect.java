@@ -15,7 +15,7 @@ public class SQLServerDialect extends BaseDialect {
 
 	@Override
 	public String addPrimaryKeyClause(MigrationSession session, String sequenceName) {
-		return super.addPrimaryKeyClause(session, sequenceName) + " identity";
+		return super.addPrimaryKeyClause(session, sequenceName) +  (sequenceName == null ? "" : " identity");
 	}
 
 }

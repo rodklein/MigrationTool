@@ -21,9 +21,11 @@ public class OracleDialect extends BaseDialect {
 
 	@Override
 	public String addPrimaryKeyClause(MigrationSession session, String sequenceName) {
-		SQLCommand sqlCommand = new SQLCommand();
-		sqlCommand.append("create sequence ").append(sequenceName).append(" increment by 1 start with 1 minvalue 1 maxvalue 999999999999999999999999999 noorder nocycle nocache");
-		session.appendSQL(sqlCommand);
+		if (sequenceName != null) {
+			SQLCommand sqlCommand = new SQLCommand();
+			sqlCommand.append("create sequence ").append(sequenceName).append(" increment by 1 start with 1 minvalue 1 maxvalue 999999999999999999999999999 noorder nocycle nocache");
+			session.appendSQL(sqlCommand);
+		}
 		return super.addPrimaryKeyClause(session, sequenceName);
 	}
 

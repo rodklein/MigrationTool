@@ -44,7 +44,7 @@ public class MigrationRunner {
 
 	public void execute(MigrationUnit unit) {
 		List<Migration> list = MigrationsExtractor.extractAll(unit);
-		MigrationSession session = new MigrationSession();
+		MigrationSession session = new MigrationSession(configuration.getDialect());
 		for (Migration migration : list) {
 			migration.parse(session);
 		}

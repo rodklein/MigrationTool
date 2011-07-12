@@ -19,7 +19,7 @@ public class DatabaseAccess {
 	private JdbcTemplate template;
 
 	public DatabaseAccess(MigrationConfiguration config) {
-		template = new JdbcTemplate(config.createDataSource());
+		template = new JdbcTemplate(config.getDataSource());
 	}
 	
 	public boolean wasExecuted(MigrationUnit migrationUnit) {

@@ -1,7 +1,11 @@
 package com.jmigration;
 
 import java.lang.reflect.Constructor;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -13,12 +17,22 @@ import org.reflections.util.FilterBuilder;
 
 public class ClasspathScanner {
 	
-	@SuppressWarnings("unchecked")
 	public static List<MigrationUnit> scan(String prefix) {
+		return scan(prefix, ClasspathHelper.forPackage(prefix));
+	}
+
+	@SuppressWarnings("unchecked")
+	public static List<MigrationUnit> scan(String prefix, Collection<URL> url) {
 		Reflections reflections = new Reflections(new ConfigurationBuilder()
-			.filterInputsBy(new FilterBuilder().include(FilterBuilder.prefix(prefix)))
-			.setUrls(ClasspathHelper.getUrlsForPackagePrefix(prefix))
-			.setScanners(new SubTypesScanner()));
+		.filterInputsBy(new FilterBuilder().include(FilterBuilder.prefix(prefix)))
+		.setUrls(url)
+		.setScanners(new SubTypesScanner()));
+		URLClassLoader loader = URLClassLoader.newInstance(url.toArray(new URL[]{}), ClasspathScanner.class.getClassLoader());
+		if (ClasspathHelper.defaultClassLoaders.length == 2) {
+			ClassLoader[] copyOf = Arrays.copyOf(ClasspathHelper.defaultClassLoaders, 3);
+			ClasspathHelper.defaultClassLoaders = copyOf;
+		}
+		ClasspathHelper.defaultClassLoaders[2] = loader;
 		Set<Class<? extends MigrationUnit>> units = reflections.getSubTypesOf(MigrationUnit.class);
 		List<MigrationUnit> migrations = new ArrayList<MigrationUnit>();
 		for (Class<? extends MigrationUnit> migrationUnitClass : units) {
