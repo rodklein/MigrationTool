@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<project name="MigrationTool" default="jar-migration">
+	
+	
+	<target name="init">
+		<property name="deploy.folder" value="deploy"/>
+		<mkdir dir="${deploy.folder}"/>
+	</target>
+
+    <target name="jar-migration" depends="init">
+    	<jar basedir="./bin" destfile="${deploy.folder}/migration.jar"/>
+    </target>
+
+</project>

@@ -112,7 +112,7 @@ public class MigrationConfiguration {
 			} catch (MalformedURLException e) {
 				migrations = ClasspathScanner.scan(packagePrefix);
 			}
-		} else {
+		} else if (packagePrefix != null){
 			migrations = ClasspathScanner.scan(packagePrefix);
 		}
 		try {

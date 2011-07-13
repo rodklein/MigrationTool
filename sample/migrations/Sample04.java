@@ -11,7 +11,7 @@ public class Sample04 implements MigrationUnit {
 
 	@Override
 	public String version() {
-		return "003";
+		return "04.6 003";
 	}
 	
 	public Migration createTablePessoa() {

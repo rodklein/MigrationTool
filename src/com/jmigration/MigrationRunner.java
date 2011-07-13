@@ -21,10 +21,19 @@ public class MigrationRunner {
 	public void run(String currentVersion) {
 		checkMigrationTable();
 		for (MigrationUnit unit : configuration.getMigrations(currentVersion)) {
-			if (!wasExecuted(unit)) {
-				execute(unit);
-				markAsExecuted(unit);
-			}
+			executeUnit(unit);
+		}
+	}
+	
+	public void run(MigrationUnit migrationUnit) {
+		checkMigrationTable();
+		executeUnit(migrationUnit);
+	}
+
+	private void executeUnit(MigrationUnit unit) {
+		if (!wasExecuted(unit)) {
+			execute(unit);
+			markAsExecuted(unit);
 		}
 	}
 
