@@ -16,7 +16,24 @@ public class AlterColumn implements Parsable {
 	@Override
 	public void parse(MigrationSession session, SQLCommand sql) {
 		sql.append(session.getDialect().alterColumn());
-		column.parse(session, sql);
+		sql.append(column.getColumnName());
+		if (column.hasType()) {
+			sql.append(" ")
+				.append(session.getDialect().alterType())
+				.append(session.getDialect().getType(column.getType()));
+			if (column.hasLength()) {
+				sql.append("(").append(String.valueOf(column.getLenght()));
+				if (column.hasPrecision()) {
+					sql.append(",").append(String.valueOf(column.getPrecision()));
+				}
+				sql.append(")");
+			}
+		}
+		if (column.isNotNull()) {
+			sql.append(" not null ");
+		} else if (column.isNullable()) {
+			sql.append(" null ");
+		}
 	}
 
 }

@@ -120,7 +120,9 @@ public class MigrationConfiguration {
 		} catch (Exception e) {
 			throw new RuntimeException(e.getMessage(), e);
 		}
-		Collections.sort(migrations, versionComparator);
+		if (migrations != null) {
+			Collections.sort(migrations, versionComparator);
+		}
 	}
 
 	public void setMigrationURL(String migrationURL) {

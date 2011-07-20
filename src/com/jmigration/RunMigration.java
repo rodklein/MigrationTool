@@ -6,8 +6,6 @@ import java.util.regex.Pattern;
 
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
-import org.reflections.util.ClasspathHelper;
-import org.reflections.util.ConfigurationBuilder;
 
 import com.jmigration.core.MigrationConfiguration;
 
@@ -18,12 +16,12 @@ public class RunMigration {
 		if (args.length > 0) {
 			migrationClass = args[0];
 		}
-		Set<String> resources = new Reflections(new ConfigurationBuilder()
-			.addUrls(ClasspathHelper.forClassLoader())
-			.setScanners(new ResourcesScanner())).getResources(Pattern.compile("migration.properties"));
+		Set<String> resources = new Reflections("", new ResourcesScanner()).getResources(Pattern.compile("migration.properties"));
 		if (resources.isEmpty()) throw new RuntimeException("The file 'migration.properties' was not found in the classpath.");
 		Properties p = new Properties();
-		p.load(RunMigration.class.getResourceAsStream(resources.iterator().next()));
+		String next = resources.iterator().next();
+		System.out.println(next);
+		p.load(RunMigration.class.getResourceAsStream("/" + next));
 		MigrationConfiguration config = new MigrationConfiguration(p);
 		Class<?> migrationUnitClass = Class.forName(migrationClass);
 		MigrationUnit migrationUnit = (MigrationUnit) migrationUnitClass.newInstance();

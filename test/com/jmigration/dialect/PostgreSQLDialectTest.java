@@ -41,7 +41,7 @@ public class PostgreSQLDialectTest {
 		MigrationSession session = new MigrationSession(new PostgreSQLDialect());
 		m.parse(session);
 		
-		assertEquals("alter table Pessoa alter column Altura NUMERIC(3)", session.getAppender().nextSql());
+		assertEquals("alter table Pessoa alter column Altura type NUMERIC(3)", session.getAppender().nextSql());
 	}
 	
 	@Test

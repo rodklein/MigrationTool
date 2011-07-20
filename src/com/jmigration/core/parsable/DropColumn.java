@@ -16,7 +16,7 @@ public class DropColumn implements Parsable {
 	@Override
 	public void parse(MigrationSession session, SQLCommand sql) {
 		sql.append(session.getDialect().dropColumn());
-		column.parse(session, sql);
+		sql.append(column.getColumnName());
 	}
 
 }
