@@ -98,4 +98,39 @@ public class Column<T extends Column<T>> {
 		return true;
 	}
 
+	public String getColumnName() {
+		return columnName;
+	}
+
+	public boolean hasType() {
+		return type > -1;
+	}
+
+	public int getType() {
+		return type;
+	}
+
+	public boolean hasLength() {
+		return lenght > -1;
+	}
+
+	public int getLenght() {
+		return lenght;
+	}
+
+	public boolean hasPrecision() {
+		return precision > -1;
+	}
+
+	public int getPrecision() {
+		return precision;
+	}
+
+	public boolean isNotNull() {
+		return notNull;
+	}
+
+	public boolean isNullable() {
+		return nullable;
+	}
 }

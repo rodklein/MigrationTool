@@ -23,5 +23,9 @@ public class PostgreSQLDialect extends BaseDialect {
 		}
 		return super.addPrimaryKeyClause(session, sequenceName);
 	}
-
+	
+	@Override
+	public String alterType() {
+		return "type ";
+	}
 }

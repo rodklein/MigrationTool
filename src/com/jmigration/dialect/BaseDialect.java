@@ -72,5 +72,10 @@ public class BaseDialect implements MigrationDialect {
 	public String addPrimaryKeyClause(MigrationSession session, String sequenceName) {
 		return "primary key";
 	}
+	
+	@Override
+	public String alterType() {
+		return "";
+	}
 
 }

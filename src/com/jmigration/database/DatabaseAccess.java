@@ -45,8 +45,13 @@ public class DatabaseAccess {
 		return template.execute(new ConnectionCallback<Boolean>() {
 			@Override
 			public Boolean doInConnection(Connection conn) throws SQLException, DataAccessException {
-				ResultSet resultSet = conn.getMetaData().getTables(null, null, "MIGRATIONS_VERSION", null);
-				return resultSet.next();
+				ResultSet resultSet = conn.getMetaData().getTables(null, null, "migrations_version", null);
+				boolean found = resultSet.next();
+				if (!found) {
+					resultSet = conn.getMetaData().getTables(null, null, "MIGRATIONS_VERSION", null);
+				}
+				System.out.println("Found table migrations_version: " + found);
+				return found;
 			}
 		});
 	}
