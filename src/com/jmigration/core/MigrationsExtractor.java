@@ -66,7 +66,7 @@ public class MigrationsExtractor {
 		} else {
 			reverseName = sortedMethod.method.getName().replaceAll("reverse(.+)", "$1");
 		}
-		return reverseName;
+		return reverseName.substring(0,1).toLowerCase() + reverseName.substring(1);
 	}
 
 	private static boolean isReverse(SortedMethod sortedMethod) {
@@ -94,7 +94,16 @@ public class MigrationsExtractor {
 
 		@Override
 		public int compareTo(SortedMethod other) {
-			return order.compareTo(other.order);
+			int orderIndex = order.compareTo(other.order);
+			return orderIndex == 0 ? -1 : orderIndex;
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			if (obj instanceof SortedMethod) {
+				return method.equals(((SortedMethod) obj).method);
+			}
+			return false;
 		}
 		
 		@SuppressWarnings("unchecked")
