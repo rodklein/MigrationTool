@@ -55,9 +55,9 @@ public class Column<T extends Column<T>> {
 			sqlCommand.append(")");
 		}
 		if (notNull) {
-			sqlCommand.append(" not null ");
+			sqlCommand.append(" not null");
 		} else if (nullable) {
-			sqlCommand.append(" null ");
+			sqlCommand.append(" null");
 		}
 	}
 	

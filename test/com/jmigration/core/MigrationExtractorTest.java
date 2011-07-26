@@ -3,6 +3,7 @@ package com.jmigration.core;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import migrations.Sample01;
@@ -18,29 +19,31 @@ public class MigrationExtractorTest {
 	
 	@Test
 	public void testSimpleExtraction() {
-		Migration m = MigrationsExtractor.extractAll(new Sample01()).get(0);
-		assertEquals(new Sample01().createTablePessoa(), m);
+		MigrationItem m = MigrationsExtractor.extractAll(new Sample01()).get(0);
+		assertEquals(new Sample01().createTablePessoa(), m.migrationIterator().next());
 	}
 	
 	@Test
 	public void testMultiExtraction() {
-		List<Migration> list = MigrationsExtractor.extractAll(new Sample02());
-		assertEquals(new Sample02().m001(), list.get(0));
-		assertEquals(new Sample02().m002(), list.get(1));
+		List<MigrationItem> list = MigrationsExtractor.extractAll(new Sample02());
+		assertEquals(new Sample02().m001(), list.get(0).migrationIterator().next());
+		assertEquals(new Sample02().m002(), list.get(1).migrationIterator().next());
 	}
 	
 	@Test
 	public void testExtractionOfList() {
-		List<Migration> list = MigrationsExtractor.extractAll(new Sample03());
-		assertEquals(new Sample03().m022(), list);
+		List<MigrationItem> list = MigrationsExtractor.extractAll(new Sample03());
+		Iterator<Migration> migrationIterator = list.get(0).migrationIterator();
+		assertEquals(new Sample03().m022().get(0), migrationIterator.next());
+		assertEquals(new Sample03().m022().get(1), migrationIterator.next());
 	}
 	
 	@Test
 	public void testExtractionSort() {
-		List<Migration> list = MigrationsExtractor.extractAll(new Sample04());
-		assertEquals(new Sample04().m001().get(0), list.get(0));
-		assertEquals(new Sample04().mmm(), list.get(2));
-		assertEquals(new Sample04().m003(), list.get(3));
+		List<MigrationItem> list = MigrationsExtractor.extractAll(new Sample04());
+		assertEquals(new Sample04().m001().get(0), list.get(0).migrationIterator().next());
+		assertEquals(new Sample04().mmm(), list.get(1).migrationIterator().next());
+		assertEquals(new Sample04().m003(), list.get(2).migrationIterator().next());
 	}
 
 	class Sample02 implements MigrationUnit {

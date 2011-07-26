@@ -78,4 +78,14 @@ public class BaseDialect implements MigrationDialect {
 		return "";
 	}
 
+	@Override
+	public String uniqueKey(String uniqueKeyName) {
+		return uniqueKeyName == null ? "" : "constraint " + uniqueKeyName + " ";
+	}
+
+	@Override
+	public String createIndex(String indexName) {
+		return "create index " + indexName;
+	}
+
 }

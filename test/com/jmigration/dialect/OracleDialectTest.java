@@ -30,7 +30,7 @@ public class OracleDialectTest {
 		MigrationSession session = new MigrationSession(new OracleDialect());
 		m.parse(session);
 		
-		assertEquals("create table Pessoa (Nome VARCHAR2(30), DataNasc DATE, Id NUMBER(6) not null , Peso NUMBER(5,2))", session.getAppender().nextSql());
+		assertEquals("create table Pessoa (Nome VARCHAR2(30), DataNasc DATE, Id NUMBER(6) not null, Peso NUMBER(5,2))", session.getAppender().nextSql());
 	}
 	
 	@Test

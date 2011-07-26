@@ -29,7 +29,7 @@ public class SqlServerDialectTest {
 		MigrationSession session = new MigrationSession(new SQLServerDialect());
 		m.parse(session);
 		
-		assertEquals("create table Pessoa (Nome VARCHAR(30), DataNasc DATETIME, Id NUMERIC(6) not null , Peso NUMERIC(5,2))", session.getAppender().nextSql());
+		assertEquals("create table Pessoa (Nome VARCHAR(30), DataNasc DATETIME, Id NUMERIC(6) not null, Peso NUMERIC(5,2))", session.getAppender().nextSql());
 	}
 	
 	@Test

@@ -7,23 +7,27 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.SortedSet;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 import com.jmigration.Migration;
 import com.jmigration.MigrationUnit;
 import com.jmigration.annotation.Order;
+import com.jmigration.annotation.Reverse;
 
 public class MigrationsExtractor {
 	
-	public static List<Migration> extractAll(MigrationUnit unit) {
-		List<Migration> result = new ArrayList<Migration>();
+	public static List<MigrationItem> extractAll(MigrationUnit unit) {
+		List<MigrationItem> result = new ArrayList<MigrationItem>();
+		Map<String, MigrationItem> migrations = new TreeMap<String, MigrationItem>();
 		SortedSet<SortedMethod> orderedMethods = new TreeSet<MigrationsExtractor.SortedMethod>();
 		Method[] methods = unit.getClass().getMethods();
 		for (Method method : methods) {
 			try {
 				if (Migration.class.isAssignableFrom(method.getReturnType()) && method.getParameterTypes().length == 0) {
-						orderedMethods.add(new SortedMethod(method));
+					orderedMethods.add(new SortedMethod(method));
 				} else if (Collection.class.isAssignableFrom(method.getReturnType()) && method.getGenericReturnType() instanceof ParameterizedType) {
 					Type[] actualTypeArguments = ((ParameterizedType) method.getGenericReturnType()).getActualTypeArguments();
 					if (actualTypeArguments.length == 1 && Migration.class.isAssignableFrom((Class<?>) actualTypeArguments[0])) {
@@ -35,11 +39,44 @@ public class MigrationsExtractor {
 			}
 		}
 		for (SortedMethod sortedMethod : orderedMethods) {
-			result.addAll(sortedMethod.execute(unit));
+			if (isReverse(sortedMethod)) {
+				String migrationToReverse = getMigrationToReverse(sortedMethod);
+				if(!migrations.containsKey(migrationToReverse)) {
+					MigrationItem migrationItem = new MigrationItem(migrationToReverse);
+					migrations.put(migrationToReverse, migrationItem);
+					result.add(migrationItem);
+				}
+				migrations.get(migrationToReverse).addReverse(sortedMethod.execute(unit));
+			} else {
+				if(!migrations.containsKey(sortedMethod.method.getName())) {
+					MigrationItem migrationItem = new MigrationItem(sortedMethod.method.getName());
+					migrations.put(sortedMethod.method.getName(), migrationItem);
+					result.add(migrationItem);
+				}
+				migrations.get(sortedMethod.method.getName()).addMigrations(sortedMethod.execute(unit));
+			}
 		}
 		return result;
 	}
 	
+	private static String getMigrationToReverse(SortedMethod sortedMethod) {
+		String reverseName = null;
+		if (sortedMethod.method.getAnnotation(Reverse.class) != null) {
+			reverseName = sortedMethod.method.getAnnotation(Reverse.class).value();
+		} else {
+			reverseName = sortedMethod.method.getName().replaceAll("reverse(.+)", "$1");
+		}
+		return reverseName;
+	}
+
+	private static boolean isReverse(SortedMethod sortedMethod) {
+		if (sortedMethod.method.getAnnotation(Reverse.class) != null || sortedMethod.method.getName().matches("reverse.+")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	static class SortedMethod implements Comparable<SortedMethod>{
 		
 		private Method method;
@@ -63,6 +100,7 @@ public class MigrationsExtractor {
 		@SuppressWarnings("unchecked")
 		public Collection<Migration> execute(Object target) {
 			try {
+				method.setAccessible(true);
 				Object result = method.invoke(target);
 				if (result instanceof Collection) {
 					return (Collection<Migration>) result;

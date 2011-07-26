@@ -21,7 +21,7 @@ public class PostgreSQLDialectTest {
 		MigrationSession session = new MigrationSession(new PostgreSQLDialect());
 		m.parse(session);
 		
-		assertEquals("create table Pessoa (Nome VARCHAR(30), DataNasc TIMESTAMP, Id NUMERIC(6) not null , Peso NUMERIC(5,2))", session.getAppender().nextSql());
+		assertEquals("create table Pessoa (Nome VARCHAR(30), DataNasc TIMESTAMP, Id NUMERIC(6) not null, Peso NUMERIC(5,2))", session.getAppender().nextSql());
 	}
 	
 	@Test

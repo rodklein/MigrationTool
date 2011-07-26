@@ -16,6 +16,8 @@ import com.google.common.collect.Collections2;
 import com.jmigration.ClasspathScanner;
 import com.jmigration.MigrationRunner;
 import com.jmigration.MigrationUnit;
+import com.jmigration.database.DatabaseAccess;
+import com.jmigration.database.DatabaseAccessImpl;
 import com.jmigration.database.DatabaseConfig;
 import com.jmigration.dialect.BaseDialect;
 import com.jmigration.dialect.MigrationDialect;
@@ -139,6 +141,10 @@ public class MigrationConfiguration {
 
 	public void setDialectClass(String dialectClass) {
 		this.dialectClass = dialectClass;
+	}
+
+	public DatabaseAccess createDatabaseAccess() {
+		return new DatabaseAccessImpl(this);
 	}
 
 }

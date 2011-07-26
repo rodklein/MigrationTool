@@ -2,16 +2,22 @@ package com.jmigration;
 
 import com.jmigration.core.AlterTable;
 import com.jmigration.core.Column;
+import com.jmigration.core.CreateIndex;
 import com.jmigration.core.CreateTable;
 import com.jmigration.core.DropTable;
 import com.jmigration.core.ForeignKey;
 import com.jmigration.core.PrimaryKey;
 import com.jmigration.core.PrimaryKeyColumn;
+import com.jmigration.core.UniqueKey;
 
 public abstract class Migration {
 	
 	public static CreateTable createTable(String tableName) {
 		return new CreateTable(tableName);
+	}
+	
+	public static CreateIndex createIndex(String indexName) {
+		return new CreateIndex(indexName);
 	}
 	
 	public static DropTable dropTable(String tableName) {
@@ -47,6 +53,14 @@ public abstract class Migration {
 
 	public static PrimaryKey primaryKey() {
 		return new PrimaryKey();
+	}
+	
+	public static UniqueKey uniqueKey() {
+		return new UniqueKey();
+	}
+	
+	public static UniqueKey uniqueKey(String ukName) {
+		return new UniqueKey(ukName);
 	}
 	
 }

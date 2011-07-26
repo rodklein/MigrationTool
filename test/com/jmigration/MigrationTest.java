@@ -1,12 +1,6 @@
 package com.jmigration;
 
-import static com.jmigration.Migration.alterTable;
-import static com.jmigration.Migration.column;
-import static com.jmigration.Migration.createTable;
-import static com.jmigration.Migration.dropTable;
-import static com.jmigration.Migration.foreignKey;
-import static com.jmigration.Migration.primaryKey;
-import static com.jmigration.Migration.primaryKeyColumn;
+import static com.jmigration.Migration.*;
 import static java.sql.Types.TIMESTAMP;
 import static java.sql.Types.NUMERIC;
 import static java.sql.Types.VARCHAR;
@@ -26,7 +20,7 @@ public class MigrationTest {
 		MigrationSession session = new MigrationSession();
 		m.parse(session);
 		
-		assertEquals("create table Pessoa (Nome VARCHAR(30), DataNasc TIMESTAMP, Id NUMERIC(6) not null , Peso NUMERIC(5,2))", session.getAppender().nextSql());
+		assertEquals("create table Pessoa (Nome VARCHAR(30), DataNasc TIMESTAMP, Id NUMERIC(6) not null, Peso NUMERIC(5,2))", session.getAppender().nextSql());
 	}
 	
 	@Test
@@ -140,4 +134,30 @@ public class MigrationTest {
 		assertEquals("create table Pessoa (cd_pessoa NUMERIC(10) not null primary key)", session.getAppender().nextSql());
 	}
 
+	@Test
+	public void testAddUniqueKey() {
+		MigrationSession session = new MigrationSession();
+		alterTable("Pessoa")
+		.add(uniqueKey("pess_uk").column("nm_pessoa")).parse(session);
+		
+		assertEquals("alter table Pessoa add constraint pess_uk unique (nm_pessoa)", session.getAppender().nextSql());
+	}
+	
+	@Test
+	public void testAddMultipleColumnUniqueKey() {
+		MigrationSession session = new MigrationSession();
+		alterTable("Pessoa")
+		.add(uniqueKey("pess_uk").column("nm_pessoa").column("cpf_cnpj")).parse(session);
+		
+		assertEquals("alter table Pessoa add constraint pess_uk unique (nm_pessoa, cpf_cnpj)", session.getAppender().nextSql());
+	}
+	
+	@Test
+	public void testCreateIndex() {
+		MigrationSession session = new MigrationSession();
+		createIndex("Pessoa_idx")
+			.on("Pessoa").add(column("nm_pessoa")).parse(session);
+		
+		assertEquals("create index Pessoa_idx on Pessoa(nm_pessoa)", session.getAppender().nextSql());
+	}	
 }

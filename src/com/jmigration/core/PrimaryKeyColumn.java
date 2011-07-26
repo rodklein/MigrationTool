@@ -23,6 +23,6 @@ public class PrimaryKeyColumn extends Column<PrimaryKeyColumn> {
 	@Override
 	public void parse(MigrationSession session, SQLCommand sqlCommand) {
 		super.parse(session, sqlCommand);
-		sqlCommand.append(session.getDialect().addPrimaryKeyClause(session, sequenceName));
+		sqlCommand.append(" ").append(session.getDialect().addPrimaryKeyClause(session, sequenceName));
 	}
 }

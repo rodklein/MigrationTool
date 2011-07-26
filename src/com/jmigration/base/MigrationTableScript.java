@@ -16,7 +16,8 @@ public class MigrationTableScript implements MigrationUnit {
 	public Migration createMigrationTable() {
 		return createTable("MIGRATIONS_VERSION")
 			.add(primaryKeyColumn("ID").as(VARCHAR).size(32))
-			.add(column("MIGRATION_NAME").as(VARCHAR).size(300));
+			.add(column("MIGRATION_NAME").as(VARCHAR).size(300))
+			.add(column("MIGRATION_ITEM").as(VARCHAR).size(300));
 	}
 
 	@Override

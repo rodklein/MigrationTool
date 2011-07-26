@@ -17,6 +17,8 @@ public interface MigrationDialect {
 	public abstract String foreignKey(String foreignKeyName);
 	public abstract String primaryKey(String primaryKeyName);
 	public abstract String addPrimaryKeyClause(MigrationSession session, String sequenceName);
-	String alterType();
+	public abstract String alterType();
+	public abstract String uniqueKey(String uniqueKeyName);
+	public abstract String createIndex(String indexName);
 
 }
