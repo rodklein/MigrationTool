@@ -53,3 +53,5 @@
 /bin/migrations/Sample04.class
 /deploy/migration.jar
 /lib/samples.jar
+/bin
+/deploy
