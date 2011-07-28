@@ -160,4 +160,12 @@ public class MigrationTest {
 		
 		assertEquals("create index Pessoa_idx on Pessoa(nm_pessoa)", session.getAppender().nextSql());
 	}	
+	
+	@Test
+	public void testDropIndex() {
+		MigrationSession session = new MigrationSession();
+		dropIndex("Pessoa_idx").parse(session);
+		
+		assertEquals("drop index Pessoa_idx", session.getAppender().nextSql());
+	}	
 }

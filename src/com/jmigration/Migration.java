@@ -4,6 +4,7 @@ import com.jmigration.core.AlterTable;
 import com.jmigration.core.Column;
 import com.jmigration.core.CreateIndex;
 import com.jmigration.core.CreateTable;
+import com.jmigration.core.DropIndex;
 import com.jmigration.core.DropTable;
 import com.jmigration.core.ForeignKey;
 import com.jmigration.core.PrimaryKey;
@@ -18,6 +19,10 @@ public abstract class Migration {
 	
 	public static CreateIndex createIndex(String indexName) {
 		return new CreateIndex(indexName);
+	}
+	
+	public static DropIndex dropIndex(String indexName) {
+		return new DropIndex(indexName);
 	}
 	
 	public static DropTable dropTable(String tableName) {
