@@ -20,5 +20,6 @@ public interface MigrationDialect {
 	public abstract String alterType();
 	public abstract String uniqueKey(String uniqueKeyName);
 	public abstract String createIndex(String indexName);
+	public abstract String indexName(String table, String indexName);
 
 }

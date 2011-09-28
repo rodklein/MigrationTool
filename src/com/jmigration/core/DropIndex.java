@@ -6,6 +6,7 @@ import com.jmigration.MigrationSession;
 public class DropIndex extends Migration {
 
 	private final String indexName;
+	private String table;
 
 	public DropIndex(String indexName) {
 		this.indexName = indexName;
@@ -14,8 +15,13 @@ public class DropIndex extends Migration {
 	public void parse(MigrationSession session) {
 		SQLCommand sql = new SQLCommand();
 		sql.append("drop index ");
-		sql.append(indexName);
+		sql.append(session.getDialect().indexName(table, indexName));
 		session.appendSQL(sql);
+	}
+
+	public Migration onTable(String table) {
+		this.table = table;
+		return this;
 	}
 
 

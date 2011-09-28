@@ -11,6 +11,7 @@ public class Column<T extends Column<T>> {
 	int precision = -1;
 	boolean notNull;
 	boolean nullable;
+	private String defaultValue;
 
 	public Column(String name) {
 		this.columnName = name;
@@ -41,6 +42,11 @@ public class Column<T extends Column<T>> {
 		this.precision = precision;
 		return (T) this;
 	}
+	
+	public T defaultValue(String value) {
+		this.defaultValue = value;
+		return (T) this;
+	}
 
 	public void parse(MigrationSession session, SQLCommand sqlCommand) {
 		sqlCommand.append(columnName);
@@ -53,6 +59,9 @@ public class Column<T extends Column<T>> {
 				sqlCommand.append(",").append(String.valueOf(precision));
 			}
 			sqlCommand.append(")");
+		}
+		if (defaultValue != null) {
+			sqlCommand.append(" default ").append(defaultValue);
 		}
 		if (notNull) {
 			sqlCommand.append(" not null");

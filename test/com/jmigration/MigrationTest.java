@@ -16,11 +16,11 @@ public class MigrationTest {
 		.add(column("Nome").as(VARCHAR).size(30))
 		.add(column("DataNasc").as(TIMESTAMP))
 		.add(column("Id").as(NUMERIC).size(6).notNull())
-		.add(column("Peso").as(NUMERIC).size(5, 2));
+		.add(column("Peso").as(NUMERIC).size(5, 2).defaultValue("78.5"));
 		MigrationSession session = new MigrationSession();
 		m.parse(session);
 		
-		assertEquals("create table Pessoa (Nome VARCHAR(30), DataNasc TIMESTAMP, Id NUMERIC(6) not null, Peso NUMERIC(5,2))", session.getAppender().nextSql());
+		assertEquals("create table Pessoa (Nome VARCHAR(30), DataNasc TIMESTAMP, Id NUMERIC(6) not null, Peso NUMERIC(5,2) default 78.5)", session.getAppender().nextSql());
 	}
 	
 	@Test
@@ -33,6 +33,15 @@ public class MigrationTest {
 		assertEquals("alter table Pessoa add Altura NUMERIC(3)", session.getAppender().nextSql());
 	}
 	
+	@Test
+	public void testAlterTableAddColumnWithDefault() {
+		Migration m = alterTable("Pessoa")
+		.add(column("sexo").as(VARCHAR).size(1).defaultValue("'M'"));
+		MigrationSession session = new MigrationSession();
+		m.parse(session);
+		
+		assertEquals("alter table Pessoa add sexo VARCHAR(1) default 'M'", session.getAppender().nextSql());
+	}
 	@Test
 	public void testAlterColumnMigration() {
 		Migration m = alterTable("Pessoa")
@@ -164,7 +173,7 @@ public class MigrationTest {
 	@Test
 	public void testDropIndex() {
 		MigrationSession session = new MigrationSession();
-		dropIndex("Pessoa_idx").parse(session);
+		dropIndex("Pessoa_idx").onTable("Pessoas").parse(session);
 		
 		assertEquals("drop index Pessoa_idx", session.getAppender().nextSql());
 	}	

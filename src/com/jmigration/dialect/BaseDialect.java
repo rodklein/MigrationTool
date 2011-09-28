@@ -88,4 +88,9 @@ public class BaseDialect implements MigrationDialect {
 		return "create index " + indexName;
 	}
 
+	@Override
+	public String indexName(String table, String indexName) {
+		return indexName;
+	}
+
 }
