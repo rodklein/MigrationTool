@@ -5,6 +5,8 @@ import com.jmigration.MigrationSession;
 @SuppressWarnings("unchecked")
 public class Column<T extends Column<T>> {
 	
+	public static final int VARCHAR99 = 99;
+	
 	final String columnName;
 	int type = -1;
 	int lenght = -1;
@@ -141,5 +143,9 @@ public class Column<T extends Column<T>> {
 
 	public boolean isNullable() {
 		return nullable;
+	}
+	
+	public String getDefaultValue() {
+		return defaultValue;
 	}
 }

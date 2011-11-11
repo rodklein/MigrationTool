@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.jmigration.MigrationSession;
+import com.jmigration.core.Column;
 import com.jmigration.core.Constraint;
+import com.jmigration.core.SQLCommand;
 
 public class BaseDialect implements MigrationDialect {
 	
@@ -16,6 +18,7 @@ public class BaseDialect implements MigrationDialect {
 		types.put(Types.NUMERIC, "NUMERIC");
 		types.put(Types.DATE, "DATE");
 		types.put(Types.TIMESTAMP, "TIMESTAMP");
+		types.put(Column.VARCHAR99, "VARCHAR");
 	}
 	
 	@Override
@@ -91,6 +94,16 @@ public class BaseDialect implements MigrationDialect {
 	@Override
 	public String indexName(String table, String indexName) {
 		return indexName;
+	}
+
+	@Override
+	public void alterAddNotNull(MigrationSession session, SQLCommand sql, Column<?> column) {
+		sql.append(" not null ");
+	}
+
+	@Override
+	public void alterDropNotNull(MigrationSession session, SQLCommand sql, Column<?> column) {
+		sql.append(" null ");
 	}
 
 }

@@ -1,7 +1,9 @@
 package com.jmigration.dialect;
 
 import com.jmigration.MigrationSession;
+import com.jmigration.core.Column;
 import com.jmigration.core.Constraint;
+import com.jmigration.core.SQLCommand;
 
 
 public interface MigrationDialect {
@@ -21,5 +23,7 @@ public interface MigrationDialect {
 	public abstract String uniqueKey(String uniqueKeyName);
 	public abstract String createIndex(String indexName);
 	public abstract String indexName(String table, String indexName);
+	public abstract void alterAddNotNull(MigrationSession session, SQLCommand sql, Column<?> column);
+	public abstract void alterDropNotNull(MigrationSession session, SQLCommand sql, Column<?> column);
 
 }

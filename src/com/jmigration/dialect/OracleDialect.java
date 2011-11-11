@@ -3,6 +3,7 @@ package com.jmigration.dialect;
 import java.sql.Types;
 
 import com.jmigration.MigrationSession;
+import com.jmigration.core.Column;
 import com.jmigration.core.SQLCommand;
 
 public class OracleDialect extends BaseDialect {
@@ -12,6 +13,7 @@ public class OracleDialect extends BaseDialect {
 		types.put(Types.NUMERIC, "NUMBER");
 		types.put(Types.DATE, "DATE");
 		types.put(Types.TIMESTAMP, "DATE");
+		types.put(Column.VARCHAR99, "VARCHAR2");
 	}
 
 	@Override

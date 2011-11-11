@@ -53,7 +53,7 @@ public class MigrationRunnerTest {
 		MigrationRunner runner = new MigrationRunner(config);
 		runner.run(new Sample01());
 		
-		assertEquals("create table MIGRATIONS_VERSION (ID VARCHAR(32) primary key, MIGRATION_NAME VARCHAR(300))", sqls.get(0).nextSql());
+		assertEquals("create table MIGRATIONS_VERSION (ID VARCHAR(32) primary key, MIGRATION_NAME VARCHAR(300), MIGRATION_ITEM VARCHAR(300))", sqls.get(0).nextSql());
 		assertEquals("create table PERSON (ID NUMERIC(8) primary key, NAME VARCHAR(40))", sqls.get(1).nextSql());
 	}
 	

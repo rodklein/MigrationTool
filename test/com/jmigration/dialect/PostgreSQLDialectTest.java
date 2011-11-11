@@ -47,11 +47,35 @@ public class PostgreSQLDialectTest {
 	@Test
 	public void testAlterColumnToNull() {
 		Migration m = alterTable("Pessoa")
-		.alter(column("Altura").nullable());
+		.alter(column("Altura").as(NUMERIC).size(3).nullable());
 		MigrationSession session = new MigrationSession(new PostgreSQLDialect());
 		m.parse(session);
 		
-		assertEquals("alter table Pessoa alter column Altura null ", session.getAppender().nextSql());
+		assertEquals("alter table Pessoa alter column Altura drop not null", session.getAppender().nextSql());
+		assertEquals("alter table Pessoa alter column Altura type NUMERIC(3)", session.getAppender().nextSql());
+	}
+	
+	@Test
+	public void testAlterColumnToNotNull() {
+		Migration m = alterTable("Pessoa")
+		.alter(column("Altura").as(NUMERIC).size(3).notNull());
+		MigrationSession session = new MigrationSession(new PostgreSQLDialect());
+		m.parse(session);
+		
+		assertEquals("alter table Pessoa alter column Altura set not null", session.getAppender().nextSql());
+		assertEquals("alter table Pessoa alter column Altura type NUMERIC(3)", session.getAppender().nextSql());
+	}
+	
+	@Test
+	public void testAlterColumnToNotNullWithDefaultValue() {
+		Migration m = alterTable("Pessoa")
+		.alter(column("Altura").as(NUMERIC).size(3).defaultValue("1").notNull());
+		MigrationSession session = new MigrationSession(new PostgreSQLDialect());
+		m.parse(session);
+		
+		assertEquals("update Pessoa set Altura = 1 where Altura is null", session.getAppender().nextSql());
+		assertEquals("alter table Pessoa alter column Altura set not null", session.getAppender().nextSql());
+		assertEquals("alter table Pessoa alter column Altura type NUMERIC(3)", session.getAppender().nextSql());
 	}
 	
 	@Test
@@ -132,7 +156,7 @@ public class PostgreSQLDialectTest {
 		createTable("Pessoa").add(primaryKeyColumn("cd_pessoa").as(NUMERIC).size(10).notNull().autoIncrement("seq_pessoa"))
 		.parse(session);
 		
-		assertEquals("create sequence seq_pessoa increment by 1 start with 1 minvalue 1 maxvalue 999999999999999999999999999", session.getAppender().nextSql());
+		assertEquals("create sequence seq_pessoa increment by 1 start with 1 minvalue 1 maxvalue 999999999999999999", session.getAppender().nextSql());
 		assertEquals("create table Pessoa (cd_pessoa NUMERIC(10) not null primary key)", session.getAppender().nextSql());
 	}
 

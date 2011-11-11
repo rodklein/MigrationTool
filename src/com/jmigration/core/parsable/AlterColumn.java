@@ -30,9 +30,9 @@ public class AlterColumn implements Parsable {
 			}
 		}
 		if (column.isNotNull()) {
-			sql.append(" not null ");
+			session.getDialect().alterAddNotNull(session, sql, column);
 		} else if (column.isNullable()) {
-			sql.append(" null ");
+			session.getDialect().alterDropNotNull(session, sql, column);
 		}
 	}
 
