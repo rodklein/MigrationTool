@@ -11,6 +11,7 @@ public class SQLServerDialect extends BaseDialect {
 		types.put(Types.NUMERIC, "NUMERIC");
 		types.put(Types.DATE, "DATE");
 		types.put(Types.TIMESTAMP, "DATETIME");
+		types.put(Types.BOOLEAN, "CHAR");
 	}
 
 	@Override

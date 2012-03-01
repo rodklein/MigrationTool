@@ -18,6 +18,7 @@ public class BaseDialect implements MigrationDialect {
 		types.put(Types.NUMERIC, "NUMERIC");
 		types.put(Types.DATE, "DATE");
 		types.put(Types.TIMESTAMP, "TIMESTAMP");
+		types.put(Types.BOOLEAN, "BOOLEAN");
 		types.put(Column.VARCHAR99, "VARCHAR");
 	}
 	
