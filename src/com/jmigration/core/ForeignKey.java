@@ -1,5 +1,9 @@
 package com.jmigration.core;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import com.jmigration.MigrationSession;
 
 
@@ -7,8 +11,8 @@ public class ForeignKey implements Constraint {
 	
 	private String foreignKeyName;
 	private String foreignTableName;
-	private String referenceColumnName;
-	private String foreignColumnName;
+	private List<String> referenceColumnsNames = new ArrayList<String>();
+	private List<String> foreignColumnsNames = new ArrayList<String>();
 
 	public ForeignKey(String fkName) {
 		this.foreignKeyName = fkName;
@@ -18,7 +22,7 @@ public class ForeignKey implements Constraint {
 	}
 
 	public ForeignKey column(String columnName) {
-		this.referenceColumnName = columnName;
+		this.referenceColumnsNames.add(columnName);
 		return this;
 		
 	}
@@ -28,16 +32,31 @@ public class ForeignKey implements Constraint {
 		return this;
 	}
 	
-	public ForeignKey references(String tableName, String columnName) {
+	public ForeignKey references(String tableName, String... columnsNames) {
+		boolean referenceColumnsIsEmpty = referenceColumnsNames.size() == 0;
 		this.foreignTableName = tableName;
-		this.foreignColumnName = columnName;
-		if (referenceColumnName == null) referenceColumnName = columnName;
+		for (String columnsName : columnsNames) {
+			this.foreignColumnsNames.add(columnsName);
+			if (referenceColumnsIsEmpty) referenceColumnsNames.add(columnsName);
+		}
 		return this;
 	}
 
 	@Override
 	public void parse(MigrationSession session, SQLCommand sqlCommand) {
-		sqlCommand.append(session.getDialect().foreignKey(foreignKeyName)).append("foreign key (").append(referenceColumnName).append(") references ").append(foreignTableName).append(" (").append(foreignColumnName).append(")"); 
+		sqlCommand.append(session.getDialect().foreignKey(foreignKeyName)).append("foreign key (");
+		for (Iterator<String> it = referenceColumnsNames.iterator(); it.hasNext();) {
+			sqlCommand.append(it.next());
+			if (it.hasNext()) sqlCommand.append(", ");
+		}
+		
+		sqlCommand.append(") references ").append(foreignTableName).append(" (");
+		for (Iterator<String> it = foreignColumnsNames.iterator(); it.hasNext();) {
+			sqlCommand.append(it.next());
+			if (it.hasNext()) sqlCommand.append(", ");
+		}
+		
+		sqlCommand.append(")"); 
 	}
 
 	@Override

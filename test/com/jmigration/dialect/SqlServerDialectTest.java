@@ -82,6 +82,16 @@ public class SqlServerDialectTest {
 	}
 	
 	@Test
+	public void testAddForeignKeyMultipleColumns() {
+		MigrationSession session = new MigrationSession(new SQLServerDialect());
+		alterTable("Pessoa")
+		.add(foreignKey("fk_cidade").references("Cidade", "id_cidade", "id_estado")).parse(session);
+		
+		assertEquals("alter table Pessoa add constraint fk_cidade foreign key (id_cidade, id_estado) references Cidade (id_cidade, id_estado)", session.getAppender().nextSql());
+	}
+
+	
+	@Test
 	public void testAddForeignKeyWithoutName() {
 		MigrationSession session = new MigrationSession(new SQLServerDialect());
 		alterTable("Pessoa")
@@ -97,6 +107,15 @@ public class SqlServerDialectTest {
 		.add(primaryKey("pk_pessoa").column("id_pessoa")).parse(session);
 		
 		assertEquals("alter table Pessoa add constraint pk_pessoa primary key (id_pessoa)", session.getAppender().nextSql());
+	}
+	
+	@Test
+	public void testAddPrimaryKeyMultipleColumns() {
+		MigrationSession session = new MigrationSession(new PostgreSQLDialect());
+		alterTable("PessoaEmpresaCidade")
+		.add(primaryKey("pk_pessoa").column("id_pessoa").column("id_empresa").column("id_cidade")).parse(session);
+		
+		assertEquals("alter table PessoaEmpresaCidade add constraint pk_pessoa primary key (id_pessoa, id_empresa, id_cidade)", session.getAppender().nextSql());
 	}
 	
 	@Test
