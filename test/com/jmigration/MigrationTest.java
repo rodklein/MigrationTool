@@ -8,6 +8,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import com.jmigration.dialect.SQLServerDialect;
+
 public class MigrationTest {
 	
 	@Test
@@ -77,6 +79,15 @@ public class MigrationTest {
 		MigrationSession session = new MigrationSession();
 		alterTable("Pessoa")
 		.add(foreignKey("fk_cidade").references("Cidade", "id_cidade")).parse(session);
+		
+		assertEquals("alter table Pessoa add constraint fk_cidade foreign key (id_cidade) references Cidade (id_cidade)", session.getAppender().nextSql());
+	}
+	
+	@Test
+	public void testAddForeignKeyInverted() {
+		MigrationSession session = new MigrationSession(new SQLServerDialect());
+		alterTable("Pessoa")
+		.add(foreignKey("fk_cidade").references("Cidade", "id_cidade").column("id_cidade")).parse(session);
 		
 		assertEquals("alter table Pessoa add constraint fk_cidade foreign key (id_cidade) references Cidade (id_cidade)", session.getAppender().nextSql());
 	}

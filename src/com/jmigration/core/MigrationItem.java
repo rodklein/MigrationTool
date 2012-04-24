@@ -12,8 +12,10 @@ public class MigrationItem {
 	private List<Migration> migrations = new ArrayList<Migration>();
 	private List<Migration> reverses = new ArrayList<Migration>();
 	private final String migrationName;
+	private final String migrationUnit;
 
-	public MigrationItem(String migrationName) {
+	public MigrationItem(String migrationUnit, String migrationName) {
+		this.migrationUnit = migrationUnit;
 		this.migrationName = migrationName;
 	}
 
@@ -35,6 +37,10 @@ public class MigrationItem {
 
 	public String getName() {
 		return migrationName;
+	}
+	
+	public String getMigrationUnit() {
+		return migrationUnit;
 	}
 
 }

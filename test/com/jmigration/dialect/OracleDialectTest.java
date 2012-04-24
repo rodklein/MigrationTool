@@ -102,6 +102,15 @@ public class OracleDialectTest {
 	}
 	
 	@Test
+	public void testAddForeignKeyInverted() {
+		MigrationSession session = new MigrationSession(new SQLServerDialect());
+		alterTable("Pessoa")
+		.add(foreignKey("fk_cidade").references("Cidade", "id_cidade").column("id_cidade")).parse(session);
+		
+		assertEquals("alter table Pessoa add constraint fk_cidade foreign key (id_cidade) references Cidade (id_cidade)", session.getAppender().nextSql());
+	}
+	
+	@Test
 	public void testAddForeignKeyWithoutName() {
 		MigrationSession session = new MigrationSession(new OracleDialect());
 		alterTable("Pessoa")

@@ -6,6 +6,7 @@ import java.util.List;
 import com.jmigration.base.AlterMigrationTableScript;
 import com.jmigration.base.MigrationTableScript;
 import com.jmigration.core.MigrationConfiguration;
+import com.jmigration.core.MigrationException;
 import com.jmigration.core.MigrationItem;
 import com.jmigration.core.MigrationsExtractor;
 import com.jmigration.database.DatabaseAccess;
@@ -71,7 +72,11 @@ public class MigrationRunner {
 	}
 
 	public void migrate(MigrationItem item) {
-		execute(item.migrationIterator());
+		try {
+			execute(item.migrationIterator());
+		} catch (Exception e) {
+			throw new MigrationException(item, e);
+		}
 	}
 
 	public void reverse(MigrationItem item) {

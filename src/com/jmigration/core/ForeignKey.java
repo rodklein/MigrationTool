@@ -13,6 +13,7 @@ public class ForeignKey implements Constraint {
 	private String foreignTableName;
 	private List<String> referenceColumnsNames = new ArrayList<String>();
 	private List<String> foreignColumnsNames = new ArrayList<String>();
+	private boolean columnMethodCalled = false;
 
 	public ForeignKey(String fkName) {
 		this.foreignKeyName = fkName;
@@ -22,6 +23,10 @@ public class ForeignKey implements Constraint {
 	}
 
 	public ForeignKey column(String columnName) {
+		if (!columnMethodCalled) {
+			this.referenceColumnsNames.clear();
+			columnMethodCalled = true;
+		}
 		this.referenceColumnsNames.add(columnName);
 		return this;
 		

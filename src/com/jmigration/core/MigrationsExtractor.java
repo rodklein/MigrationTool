@@ -42,14 +42,14 @@ public class MigrationsExtractor {
 			if (isReverse(sortedMethod)) {
 				String migrationToReverse = getMigrationToReverse(sortedMethod);
 				if(!migrations.containsKey(migrationToReverse)) {
-					MigrationItem migrationItem = new MigrationItem(migrationToReverse);
+					MigrationItem migrationItem = new MigrationItem(unit.name(), migrationToReverse);
 					migrations.put(migrationToReverse, migrationItem);
 					result.add(migrationItem);
 				}
 				migrations.get(migrationToReverse).addReverse(sortedMethod.execute(unit));
 			} else {
 				if(!migrations.containsKey(sortedMethod.method.getName())) {
-					MigrationItem migrationItem = new MigrationItem(sortedMethod.method.getName());
+					MigrationItem migrationItem = new MigrationItem(unit.name(), sortedMethod.method.getName());
 					migrations.put(sortedMethod.method.getName(), migrationItem);
 					result.add(migrationItem);
 				}
@@ -117,6 +117,7 @@ public class MigrationsExtractor {
 					return Collections.singleton((Migration) result);
 				}
 			} catch (Exception e) {
+				e.printStackTrace();
 				throw new RuntimeException();
 			}
 		}
