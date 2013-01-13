@@ -15,7 +15,7 @@ public interface MigrationDialect {
 	public abstract String alterColumn();
 	public abstract String dropColumn();
 	public abstract String addConstraint();
-	public abstract String dropConstraint(Constraint constraint);
+	public abstract String dropConstraint(MigrationSession session, Constraint constraint);
 	public abstract String foreignKey(String foreignKeyName);
 	public abstract String primaryKey(String primaryKeyName);
 	public abstract String addPrimaryKeyClause(MigrationSession session, String sequenceName);

@@ -4,7 +4,9 @@ import java.sql.Types;
 
 import com.jmigration.MigrationSession;
 import com.jmigration.core.Column;
+import com.jmigration.core.Constraint;
 import com.jmigration.core.SQLCommand;
+import com.jmigration.core.UniqueKey;
 
 public class OracleDialect extends BaseDialect {
 	
@@ -29,6 +31,17 @@ public class OracleDialect extends BaseDialect {
 			session.appendSQL(sqlCommand);
 		}
 		return super.addPrimaryKeyClause(session, sequenceName);
+	}
+	
+	@Override
+	public String dropConstraint(MigrationSession session, Constraint constraint) {
+		if (constraint instanceof UniqueKey) {
+			SQLCommand sqlCommand = new SQLCommand();
+			sqlCommand.append("drop index ");
+			sqlCommand.append(constraint.getName());
+			session.appendSQL(sqlCommand);
+		}
+		return super.dropConstraint(session, constraint);
 	}
 
 }

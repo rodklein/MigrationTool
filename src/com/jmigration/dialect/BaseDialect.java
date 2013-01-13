@@ -58,7 +58,7 @@ public class BaseDialect implements MigrationDialect {
 	}
 
 	@Override
-	public String dropConstraint(Constraint constraint) {
+	public String dropConstraint(MigrationSession session, Constraint constraint) {
 		return " drop constraint " + constraint.getName();
 	}
 

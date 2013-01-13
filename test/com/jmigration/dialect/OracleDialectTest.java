@@ -1,12 +1,6 @@
 package com.jmigration.dialect;
 
-import static com.jmigration.Migration.alterTable;
-import static com.jmigration.Migration.column;
-import static com.jmigration.Migration.createTable;
-import static com.jmigration.Migration.dropTable;
-import static com.jmigration.Migration.foreignKey;
-import static com.jmigration.Migration.primaryKey;
-import static com.jmigration.Migration.primaryKeyColumn;
+import static com.jmigration.Migration.*;
 import static java.sql.Types.NUMERIC;
 import static java.sql.Types.TIMESTAMP;
 import static java.sql.Types.VARCHAR;
@@ -30,7 +24,7 @@ public class OracleDialectTest {
 		MigrationSession session = new MigrationSession(new OracleDialect());
 		m.parse(session);
 		
-		assertEquals("create table Pessoa (Nome VARCHAR2(30), DataNasc DATE, Id NUMBER(6) not null, Peso NUMBER(5,2))", session.getAppender().nextSql());
+		assertEquals("create table Pessoa (Nome VARCHAR2(30), DataNasc TIMESTAMP, Id NUMBER(6) not null, Peso NUMBER(5,2))", session.getAppender().nextSql());
 	}
 	
 	@Test
@@ -171,6 +165,19 @@ public class OracleDialectTest {
 		assertEquals("alter table Pessoa drop constraint pk_pessoa", session.getAppender().nextSql());
 		
 	}
+	
+	@Test
+	public void testDropUniqueKeyConstraint() {
+		MigrationSession session = new MigrationSession(new OracleDialect());
+		alterTable("Pessoa")
+		.drop(uniqueKey("uk_cidade"))
+		.parse(session);
+		
+		assertEquals("drop index uk_cidade", session.getAppender().nextSql());
+		assertEquals("alter table Pessoa drop constraint uk_cidade", session.getAppender().nextSql());
+		
+	}
+
 
 	@Test
 	public void testCreateAutoIncrementPrimaryKey() {

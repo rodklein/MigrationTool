@@ -37,11 +37,11 @@ public class PostgreSQLDialectTest {
 	@Test
 	public void testAlterColumnMigration() {
 		Migration m = alterTable("Pessoa")
-		.alter(column("Altura").as(NUMERIC).size(3));
+		.alter(column("Altura").as(NUMERIC).size(3,2));
 		MigrationSession session = new MigrationSession(new PostgreSQLDialect());
 		m.parse(session);
 		
-		assertEquals("alter table Pessoa alter column Altura type NUMERIC(3)", session.getAppender().nextSql());
+		assertEquals("alter table Pessoa alter column Altura type NUMERIC(3,2)", session.getAppender().nextSql());
 	}
 	
 	@Test

@@ -15,7 +15,7 @@ public class DropConstraint implements Parsable {
 
 	@Override
 	public void parse(MigrationSession session, SQLCommand sql) {
-		sql.append(session.getDialect().dropConstraint(constraint));
+		sql.append(session.getDialect().dropConstraint(session, constraint));
 	}
 
 }
