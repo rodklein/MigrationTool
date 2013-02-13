@@ -70,7 +70,7 @@ public class MigrationConfiguration {
 		if (currentVersion == null) {
 			return migrations;
 		}
-		return (List<MigrationUnit>) new ArrayList<MigrationUnit>(Collections2.filter(migrations, new Predicate<MigrationUnit>() {
+		List<MigrationUnit> result = (List<MigrationUnit>) new ArrayList<MigrationUnit>(Collections2.filter(migrations, new Predicate<MigrationUnit>() {
 			@Override
 			public boolean apply(MigrationUnit unit) {
 				return versionComparator.compare(unit, new MigrationUnit() {
@@ -87,6 +87,9 @@ public class MigrationConfiguration {
 				}) <= 0;
 			}
 		}));
+		
+		Collections.sort(result, versionComparator);
+		return result;
 	}
 
 	private DataSource createDataSource() {
