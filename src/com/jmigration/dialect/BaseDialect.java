@@ -20,6 +20,7 @@ public class BaseDialect implements MigrationDialect {
 		types.put(Types.TIMESTAMP, "TIMESTAMP");
 		types.put(Types.BOOLEAN, "BOOLEAN");
 		types.put(Column.VARCHAR99, "VARCHAR");
+		types.put(Types.LONGVARCHAR, "TEXT");
 	}
 	
 	@Override

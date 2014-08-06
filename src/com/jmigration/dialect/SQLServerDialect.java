@@ -12,6 +12,7 @@ public class SQLServerDialect extends BaseDialect {
 		types.put(Types.DATE, "DATE");
 		types.put(Types.TIMESTAMP, "DATETIME");
 		types.put(Types.BOOLEAN, "CHAR");
+		types.put(Types.LONGVARCHAR, "VARCHAR(max)");
 	}
 
 	@Override

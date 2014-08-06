@@ -16,6 +16,7 @@ public class OracleDialect extends BaseDialect {
 		types.put(Types.DATE, "DATE");
 		types.put(Column.VARCHAR99, "VARCHAR2");
 		types.put(Types.BOOLEAN, "CHAR");
+		types.put(Types.LONGVARCHAR, "CLOB");
 	}
 
 	@Override
