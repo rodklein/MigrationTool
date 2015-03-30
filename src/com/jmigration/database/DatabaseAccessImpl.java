@@ -25,7 +25,7 @@ public class DatabaseAccessImpl implements DatabaseAccess {
 	
 	@Override
 	public boolean wasExecuted(MigrationUnit migrationUnit, MigrationItem migrationItem) {
-		int count = template.queryForInt("select count(*) from MIGRATIONS_VERSION where MIGRATION_NAME = ? and (MIGRATION_ITEM = ? or MIGRATION_ITEM is null)", migrationUnit.name(), migrationItem.getName());
+		int count = template.queryForObject("select count(*) from MIGRATIONS_VERSION where MIGRATION_NAME = ? and (MIGRATION_ITEM = ? or MIGRATION_ITEM is null)", Integer.class, migrationUnit.name(), migrationItem.getName());
 		return count != 0;
 	}
 	

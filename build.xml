@@ -1,14 +1,45 @@
 <?xml version="1.0"?>
-<project name="MigrationTool" default="jar-migration">
-	
-	
+<project xmlns:ivy="antlib:org.apache.ivy.ant" name="MigrationTool" default="jar-migration">
+
+	<property name="ivy.version" value="2.2.0" />
+	<property name="ivy.url" value="http://repo2.maven.org/maven2/org/apache/ivy/ivy" />
+	<property name="build.dir" value="build" />
+	<property name="build.dir.classes" value="${build.dir}/classes" />
+	<property name="build.dir.lib" value="${build.dir}/lib" />
+
+	<path id="autoivy.classpath">
+		<fileset dir="${build.dir.lib}">
+			<include name="**/*.jar" />
+		</fileset>
+		<pathelement location="${build.dir}/ivy-${ivy.version}.jar" />
+	</path>
+
 	<target name="init">
-		<property name="deploy.folder" value="deploy"/>
-		<mkdir dir="${deploy.folder}"/>
+		<property name="deploy.folder" value="deploy" />
+		<mkdir dir="${deploy.folder}" />
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${build.dir.classes}" />
+		<mkdir dir="${build.dir.lib}" />
 	</target>
 
-    <target name="jar-migration" depends="init">
-    	<jar basedir="./bin" destfile="${deploy.folder}/migration.jar"/>
-    </target>
+	<target name="ivy-download" depends="init" unless="ivy.jar.exists">
+		<get src="${ivy.url}/${ivy.version}/ivy-${ivy.version}.jar" dest="${build.dir.lib}/ivy-${ivy.version}.jar" usetimestamp="true" />
+	</target>
+
+	<target name="resolve" depends="ivy-download">
+		<taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpathref="autoivy.classpath"/>
+		<ivy:resolve file="ivy.xml"/>
+		<ivy:retrieve pattern="${build.dir.lib}/[conf]/[artifact]-[revision].[ext]" />
+	</target>
+
+	<target name="compile" depends="resolve">
+		<javac source="src" destdir="${build.dir.classes}">
+			<classpath path="${build.dir.lib}" />
+		</javac>
+	</target>
+
+	<target name="jar-migration" depends="compile">
+		<jar basedir="./bin" destfile="${deploy.folder}/migration.jar" />
+	</target>
 
 </project>
