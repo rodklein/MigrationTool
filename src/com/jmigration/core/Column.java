@@ -8,7 +8,7 @@ public class Column<T extends Column<T>> {
 	public static final int VARCHAR99 = 99;
 	
 	final String columnName;
-	int type = -1;
+	int type = Integer.MIN_VALUE;
 	int lenght = -1;
 	int precision = -1;
 	boolean notNull;
@@ -52,7 +52,7 @@ public class Column<T extends Column<T>> {
 
 	public void parse(MigrationSession session, SQLCommand sqlCommand) {
 		sqlCommand.append(columnName);
-		if (type > -1) {
+		if (type != Integer.MIN_VALUE) {
 			sqlCommand.append(" ").append(session.getDialect().getType(type));
 		}
 		if (lenght > -1) {
