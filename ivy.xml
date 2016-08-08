@@ -31,8 +31,8 @@
     </configurations>
 	
 	<dependencies>
-		<dependency org="org.springframework" name="spring-jdbc" rev="4.1.6.RELEASE" />
-		<dependency org="org.reflections" name="reflections" rev="0.9.9" />
+		<dependency org="org.springframework" name="spring-jdbc" rev="4.1.9.RELEASE" conf="main->default"/>
+		<dependency org="org.reflections" name="reflections" rev="0.9.9" conf="main->default"/>
 		<dependency org="org.mockito" name="mockito-core" rev="1.10.19" conf="test->default"/>
 	</dependencies>
 </ivy-module>
