@@ -102,6 +102,33 @@ public class MigrationTest {
 	}
 	
 	@Test
+	public void testAddForeignKeyUpdateCascade() {
+		MigrationSession session = new MigrationSession();
+		alterTable("Pessoa")
+		.add(foreignKey("fk_cidade").references("Cidade", "id_cidade").onUpdateCascade()).parse(session);
+		
+		assertEquals("alter table Pessoa add constraint fk_cidade foreign key (id_cidade) references Cidade (id_cidade) on update cascade", session.getAppender().nextSql());
+	}
+	
+	@Test
+	public void testAddForeignKeyDeleteCascade() {
+		MigrationSession session = new MigrationSession();
+		alterTable("Pessoa")
+		.add(foreignKey("fk_cidade").references("Cidade", "id_cidade").onDeleteCascade()).parse(session);
+		
+		assertEquals("alter table Pessoa add constraint fk_cidade foreign key (id_cidade) references Cidade (id_cidade) on delete cascade", session.getAppender().nextSql());
+	}
+	
+	@Test
+	public void testAddForeignKeyUpdateAndDeleteCascade() {
+		MigrationSession session = new MigrationSession();
+		alterTable("Pessoa")
+		.add(foreignKey("fk_cidade").references("Cidade", "id_cidade").onDeleteCascade().onUpdateCascade()).parse(session);
+		
+		assertEquals("alter table Pessoa add constraint fk_cidade foreign key (id_cidade) references Cidade (id_cidade) on update cascade on delete cascade", session.getAppender().nextSql());
+	}
+	
+	@Test
 	public void testAddPrimaryKey() {
 		MigrationSession session = new MigrationSession();
 		alterTable("Pessoa")

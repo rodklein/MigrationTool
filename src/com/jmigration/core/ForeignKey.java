@@ -14,6 +14,8 @@ public class ForeignKey implements Constraint {
 	private List<String> referenceColumnsNames = new ArrayList<String>();
 	private List<String> foreignColumnsNames = new ArrayList<String>();
 	private boolean columnMethodCalled = false;
+	private boolean onUpdateCascade = false;
+	private boolean onDeleteCascade = false;
 
 	public ForeignKey(String fkName) {
 		this.foreignKeyName = fkName;
@@ -61,11 +63,27 @@ public class ForeignKey implements Constraint {
 			if (it.hasNext()) sqlCommand.append(", ");
 		}
 		
-		sqlCommand.append(")"); 
+		sqlCommand.append(")");
+		if (onUpdateCascade) {
+			sqlCommand.append(" on update cascade");
+		}
+		if (onDeleteCascade) {
+			sqlCommand.append(" on delete cascade");
+		}
 	}
 
 	@Override
 	public String getName() {
 		return foreignKeyName;
+	}
+
+	public ForeignKey onUpdateCascade() {
+		onUpdateCascade = true;
+		return this;
+	}
+	
+	public ForeignKey onDeleteCascade() {
+		onDeleteCascade = true;
+		return this;
 	}
 }
