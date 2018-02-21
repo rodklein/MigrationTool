@@ -18,6 +18,7 @@ import com.jmigration.MigrationRunner;
 import com.jmigration.MigrationUnit;
 import com.jmigration.database.DatabaseAccess;
 import com.jmigration.database.DatabaseAccessImpl;
+import com.jmigration.database.DatabaseAccessLogAll;
 import com.jmigration.database.DatabaseConfig;
 import com.jmigration.dialect.BaseDialect;
 import com.jmigration.dialect.MigrationDialect;
@@ -33,6 +34,7 @@ public class MigrationConfiguration {
 	private String versionComparatorClass = "com.jmigration.base.BasicComparator";
 	private String packagePrefix = null;
 	private String migrationURL;
+	private boolean logOnly = false;
 
 	public MigrationConfiguration() {}
 			
@@ -48,6 +50,10 @@ public class MigrationConfiguration {
 		}
 		if (props.containsKey("migration.url")) {
 			setMigrationURL(props.getProperty("migration.url"));
+		}
+		
+		if (props.containsKey("migration.log.only")) {
+			setLogOnly(Boolean.parseBoolean(props.getProperty("migration.log.only", "false")));
 		}
 		databaseConfig = new DatabaseConfig(props.getProperty("migration.jdbc.url"), props.getProperty("migration.jdbc.driver"), props.getProperty("migration.jdbc.username"), props.getProperty("migration.jdbc.password"));
 		setDataSource(createDataSource());
@@ -90,6 +96,10 @@ public class MigrationConfiguration {
 		
 		Collections.sort(result, versionComparator);
 		return result;
+	}
+	
+	public void setLogOnly(boolean logOnly) {
+		this.logOnly = logOnly;
 	}
 
 	private DataSource createDataSource() {
@@ -147,6 +157,7 @@ public class MigrationConfiguration {
 	}
 
 	public DatabaseAccess createDatabaseAccess() {
+		if (logOnly) return new DatabaseAccessLogAll();
 		return new DatabaseAccessImpl(this);
 	}
 
