@@ -114,7 +114,7 @@ public class Column<T extends Column<T>> {
 	}
 
 	public boolean hasType() {
-		return type > -1;
+		return type > Integer.MIN_VALUE;
 	}
 
 	public int getType() {
