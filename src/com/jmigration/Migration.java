@@ -6,6 +6,7 @@ import com.jmigration.core.CreateIndex;
 import com.jmigration.core.CreateTable;
 import com.jmigration.core.DropIndex;
 import com.jmigration.core.DropTable;
+import com.jmigration.core.ExecuteSQL;
 import com.jmigration.core.ForeignKey;
 import com.jmigration.core.PrimaryKey;
 import com.jmigration.core.PrimaryKeyColumn;
@@ -67,5 +68,11 @@ public abstract class Migration {
 	public static UniqueKey uniqueKey(String ukName) {
 		return new UniqueKey(ukName);
 	}
+	
+	public static ExecuteSQL executeSQL(String sqlCommand) {
+		return new ExecuteSQL(sqlCommand);
+	}
+	
+	
 	
 }
